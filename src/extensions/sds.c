@@ -1,4 +1,8 @@
-#include "my-db/sds-extensions.h"
+#include "extensions/sds.h"
+
+#include <string.h>
+
+#include "c-vector/vec.h"
 
 bool sdsstartwith(sds str, const char *prefix) {
     int i = 0;

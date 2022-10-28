@@ -5,7 +5,7 @@
 #include <malloc.h>
 #include <string.h>
 
-#include "my-db/sds-extensions.h"
+#include "extensions/sds.h"
 
 Section* createEmptySection(const char* name) {
     Section* new = malloc(sizeof(Section));

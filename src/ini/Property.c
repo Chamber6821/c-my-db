@@ -22,6 +22,8 @@ void freeProperty(Property* this) {
     free(this);
 }
 
+bool hasValue(Property* this) { return this->type != PT_NONE; }
+
 void clean(Property* this) {
     switch (this->type) {
         case PT_STRING: {

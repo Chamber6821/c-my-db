@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdbool.h>
 typedef float *vec_float;
 typedef char **vec_string;
 
@@ -25,6 +26,8 @@ typedef struct {
 
 Property *createEmptyProperty(const char *name);
 void freeProperty(Property *this);
+
+bool hasValue(Property* this);
 
 void clean(Property *this);
 

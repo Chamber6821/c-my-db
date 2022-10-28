@@ -5,11 +5,13 @@ set(CMAKE_C_STANDARD 17)
 
 add_library(c-vector lib/c-vector/vec.c)
 add_library(sds lib/sds/sds.c)
+add_library(inih lib/inih/ini.c)
 
 function(addLibraries)
     target_include_directories(${ARGV0} PUBLIC lib)
     target_link_libraries(${ARGV0} c-vector)
     target_link_libraries(${ARGV0} sds)
+    target_link_libraries(${ARGV0} inih)
 endfunction()
 
 file(GLOB_RECURSE SOURCES src/*.c)

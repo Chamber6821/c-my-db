@@ -70,13 +70,17 @@ SelectRequest* tryBuildSelectRequest(Section* section) {
     vec_sds fields = getStrings(property);
     if (fields == NULL) return NULL;
 
+    property = findProperty(section, "limit");
+    float limit = 0;
+    if (property != NULL) limit = getNumber(property);
+
     SelectRequest* request = malloc(sizeof(SelectRequest));
     request->base.type = RT_SELECT;
     request->base.name = section->name;
     request->selectFields = fields;
     request->whereRule = tryBuildWhereRule(section);
     request->orderRule = tryBuildOrderRule(section);
-    request->limit = 0;
+    request->limit = limit;
     return request;
 }
 

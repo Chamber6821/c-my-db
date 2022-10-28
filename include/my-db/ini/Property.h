@@ -1,8 +1,11 @@
 #pragma once
 
 #include <stdbool.h>
+
+#include "sds/sds.h"
+
 typedef float *vec_float;
-typedef char **vec_string;
+typedef sds *vec_sds;
 
 typedef enum {
     PT_NONE,
@@ -13,21 +16,21 @@ typedef enum {
 } PropertyType;
 
 typedef struct {
-    char *name;
+    sds name;
     PropertyType type;
     union {
         float number;
-        char *string;
+        sds string;
 
         vec_float numbers;
-        vec_string strings;
+        vec_sds strings;
     };
 } Property;
 
 Property *createEmptyProperty(const char *name);
 void freeProperty(Property *this);
 
-bool hasValue(Property* this);
+bool hasValue(Property *this);
 
 void clean(Property *this);
 
@@ -37,8 +40,8 @@ void setNumber(Property *this, float value);
 vec_float getNumbers(Property *this);
 void copyToNumbers(Property *this, vec_float what);
 
-char *getString(Property *this);
+sds getString(Property *this);
 void copyToString(Property *this, const char *what);
 
-vec_string getStrings(Property *this);
-void copyToStrings(Property *this, vec_string what);
+vec_sds getStrings(Property *this);
+void copyToStrings(Property *this, vec_sds what);

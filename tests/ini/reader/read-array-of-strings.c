@@ -20,7 +20,7 @@ int main() {
     assert(property != NULL);
     assert(property->type == PT_ARRAY_STRING);
 
-    vec_string cities = getStrings(property);
+    vec_sds cities = getStrings(property);
     assert(cities != NULL);
     assert(vector_size(cities) == 2);
     assert(strcmp(cities[0], "Minsk") == 0);

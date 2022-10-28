@@ -37,14 +37,14 @@ static bool tryAddNumber(Property* prop, float number) {
 
 static bool tryAddString(Property* prop, const char* str) {
     if (!hasValue(prop)) {
-        vec_string empty = vector_create();
+        vec_sds empty = vector_create();
         copyToStrings(prop, empty);
         vector_free(empty);
     } else if (getStrings(prop) == NULL) {
         return false;
     }
 
-    vector_add(&prop->strings, strdup(str));
+    vector_add(&prop->strings, sdsnew(str));
     return true;
 }
 

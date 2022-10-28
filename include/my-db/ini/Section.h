@@ -5,7 +5,7 @@
 typedef Property **vec_Property;
 
 typedef struct {
-    char *name;
+    sds name;
     vec_Property properties;
 } Section;
 

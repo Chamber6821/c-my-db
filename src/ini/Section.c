@@ -9,7 +9,7 @@ Section* createEmptySection(const char* name) {
     Section* new = malloc(sizeof(Section));
     assert(new != NULL);
 
-    new->name = strdup(name);
+    new->name = sdsnew(name);
     assert(new->name != NULL);
 
     new->properties = vector_create();
@@ -23,7 +23,7 @@ void freeSection(Section* this) {
         freeProperty(this->properties[i]);
     }
     vector_free(this->properties);
-    free(this->name);
+    sdsfree(this->name);
     free(this);
 }
 

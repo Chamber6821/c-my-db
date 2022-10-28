@@ -8,6 +8,24 @@
 
 const char* ARRAY_SUFFIX = "[]";
 
+static bool embracedSingleQuotes(sds trimmed) {
+    int lastIndex = sdslen(trimmed) - 1;
+    return trimmed[0] == '\'' && trimmed[lastIndex] == '\'';
+}
+
+static bool embracedDoubleQuotes(sds trimmed) {
+    int lastIndex = sdslen(trimmed) - 1;
+    return trimmed[0] == '"' && trimmed[lastIndex] == '"';
+}
+
+static sds unquotes(sds trimmed) {
+    if (!embracedSingleQuotes(trimmed) && !embracedDoubleQuotes(trimmed))
+        return trimmed;
+
+    sdsrange(trimmed, 1, -2);
+    return trimmed;
+}
+
 static bool isArrayElement(const char* key) {
     sds copy = sdsnew(key);
     sdsrange(copy, -2, -1);
@@ -44,7 +62,7 @@ static bool tryAddString(Property* prop, const char* str) {
         return false;
     }
 
-    vector_add(&prop->strings, sdsnew(str));
+    vector_add(&prop->strings, unquotes(sdsnew(str)));
     return true;
 }
 
@@ -85,7 +103,9 @@ static int handler(void* user, const char* sectionName, const char* key,
         return 1;
     }
 
-    copyToString(property, value);
+    sds copy = unquotes(sdsnew(value));
+    copyToString(property, copy);
+    sdsfree(copy);
     return 1;
 }
 

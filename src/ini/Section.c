@@ -5,6 +5,8 @@
 #include <malloc.h>
 #include <string.h>
 
+#include "my-db/sds-extensions.h"
+
 Section* createEmptySection(const char* name) {
     Section* new = malloc(sizeof(Section));
     assert(new != NULL);
@@ -34,4 +36,19 @@ Property* findProperty(Section* this, const char* propertyName) {
         }
     }
     return NULL;
+}
+vec_Property findPropertiesWithPrefix(Section* this, const char* prefix) {
+    vec_Property acc = vector_create();
+    for (int i = 0; i < vector_size(this->properties); i++) {
+        if (sdsstartwith(this->properties[i]->name, prefix)) {
+            vector_add(&acc, this->properties[i]);
+        }
+    }
+
+    if (vector_size(acc) == 0) {
+        vector_free(acc);
+        return NULL;
+    }
+
+    return acc;
 }

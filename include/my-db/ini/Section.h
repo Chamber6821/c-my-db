@@ -13,3 +13,4 @@ Section *createEmptySection(const char *name);
 void freeSection(Section *this);
 
 Property *findProperty(Section *this, const char *propertyName);
+vec_Property findPropertiesWithPrefix(Section *this, const char *prefix);

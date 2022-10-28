@@ -3,6 +3,9 @@
 #include "my-db/ini/Property.h"
 #include "my-db/ini/Section.h"
 
+typedef vec_Property Record;
+typedef Record *vec_Record;
+
 typedef enum {
     RO_ASC,
     RO_DESC,
@@ -47,7 +50,7 @@ typedef struct {
 
 typedef struct {
     Request base;
-    vec_Property values;
+    vec_Record records;
 } AddRequest;
 
 typedef struct {
@@ -55,9 +58,9 @@ typedef struct {
     WhereRule *whereRule;
 } DeleteRequest;
 
-//Request *tryBuildRequest(Section *section);
-//void freeRequest(Request *request);
+// Request *tryBuildRequest(Section *section);
+// void freeRequest(Request *request);
 
 SelectRequest *tryBuildSelectRequest(Section *section);
-//AddRequest *tryBuildAddRequest(Section *section);
-//DeleteRequest *tryBuildDeleteRequest(Section *section);
+AddRequest *tryBuildAddRequest(Section *section);
+// DeleteRequest *tryBuildDeleteRequest(Section *section);

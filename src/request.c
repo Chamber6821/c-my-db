@@ -1,7 +1,13 @@
 #include "my-db/request.h"
 
 #include <malloc.h>
+#include <stdio.h>
 #include <string.h>
+
+#include "c-vector/vec.h"
+#include "extensions/sds.h"
+#include "extensions/string.h"
+#include "extensions/vec.h"
 
 static Condition toCondition(const char* str) {
     if (str == NULL) return C_NONE;
@@ -84,6 +90,55 @@ SelectRequest* tryBuildSelectRequest(Section* section) {
     return request;
 }
 
-AddRequest* tryBuildAddRequest(Section* section) { return NULL; }
+Record newRecord() { return vector_create(); }
+
+Record makeRecord(vec_sds scheme, vec_sds rawFields) {
+    Record record = newRecord();
+    for (int i = 0; i < vector_size(scheme); i++) {
+        Property* prop = createEmptyProperty(scheme[i]);
+
+        float number;
+        if (1 == sscanf(rawFields[i], "%f", &number)) {
+            setNumber(prop, number);
+        } else {
+            copyToString(prop, rawFields[i]);
+        }
+
+        vector_add(&record, prop);
+    }
+    return record;
+}
+
+AddRequest* tryBuildAddRequest(Section* section) {
+    Property* schemeProp = findProperty(section, "scheme");
+    if (schemeProp == NULL) return NULL;
+    const char* gluedScheme = getString(schemeProp);
+    if (gluedScheme == NULL) return NULL;
+
+    Property* recordsProp = findProperty(section, "records[]");
+    if (recordsProp == NULL) return NULL;
+    vec_sds recordStrings = getStrings(recordsProp);
+    if (recordStrings == NULL) return NULL;
+
+    vec_sds scheme = sdssplit(gluedScheme, "|");
+    if (scheme == NULL) return NULL;
+
+    vec_Record records = vector_create();
+    for (int i = 0; i < vector_size(recordStrings); i++) {
+        int fieldCount = 1 + strstrcount(recordStrings[i], "|");
+        if (vector_size(scheme) != fieldCount) continue;
+
+        vec_sds rawFields = sdssplit(recordStrings[i], "|");
+        vector_add(&records, makeRecord(scheme, rawFields));
+    }
+
+    vector_deep_free(scheme, sdsfree, i);
+
+    AddRequest* request = malloc(sizeof(AddRequest));
+    request->base.type = RT_ADD;
+    request->base.name = section->name;
+    request->records = records;
+    return request;
+}
 
 DeleteRequest* tryBuildDeleteRequest(Section* section) { return NULL; }

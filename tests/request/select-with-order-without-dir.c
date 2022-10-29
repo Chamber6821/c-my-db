@@ -30,4 +30,7 @@ int main() {
     assert(strcmp(request->orderRule->field, "name") == 0);
     assert(request->orderRule->direction == RO_ASC);
     assert(request->limit == 0);
+
+    freeConfig(config);
+    freeRequest(&request->base);
 }

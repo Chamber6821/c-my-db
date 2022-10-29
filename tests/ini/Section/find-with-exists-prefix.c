@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <c-vector/vec.h>
 
+#include "extensions/vec.h"
 #include "my-db/ini/Section.h"
 
 int main() {
@@ -22,4 +23,7 @@ int main() {
     assert(vector_size(properties) == 2);
     assert(properties[0] == propA);
     assert(properties[1] == propB);
+
+    freeSection(section);
+    vector_free(properties); // Property* was free in freeSection
 }

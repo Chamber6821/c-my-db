@@ -26,4 +26,7 @@ int main() {
     assert(strcmp(request->whereRule->field, "cash") == 0);
     assert(request->whereRule->condition == C_LT);
     assert(strcmp(request->whereRule->operand, "100.0") == 0);
+
+    freeConfig(config);
+    freeRequest(&request->base);
 }

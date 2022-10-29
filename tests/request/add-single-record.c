@@ -41,4 +41,7 @@ int main() {
     assert(getString(record[2]) != NULL);
     assert(strcmp(record[2]->name, "pet") == 0);
     assert(strcmp(getString(record[2]), "cat") == 0);
+
+    freeConfig(config);
+    freeRequest(&request->base);
 }

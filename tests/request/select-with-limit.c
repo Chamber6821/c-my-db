@@ -28,4 +28,7 @@ int main() {
     assert(request->whereRule == NULL);
     assert(request->orderRule == NULL);
     assert(request->limit == 10);
+
+    freeConfig(config);
+    freeRequest(&request->base);
 }

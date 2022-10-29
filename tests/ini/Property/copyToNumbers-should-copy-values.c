@@ -11,7 +11,7 @@ int main() {
     vector_add(&numbers, 96);
     copyToNumbers(property, numbers);
 
-    vector_pop(&numbers);
+    vector_pop(numbers);
     numbers[0] = -1;
 
     vec_float gotNumbers = getNumbers(property);
@@ -20,5 +20,6 @@ int main() {
     assert(gotNumbers[0] == 42.228f);
     assert(gotNumbers[1] == 96);
 
+    vector_free(numbers);
     freeProperty(property);
 }

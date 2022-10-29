@@ -59,7 +59,7 @@ typedef struct {
 } DeleteRequest;
 
 // Request *tryBuildRequest(Section *section);
-// void freeRequest(Request *request);
+void freeRequest(Request *request);
 
 SelectRequest *tryBuildSelectRequest(Section *section);
 AddRequest *tryBuildAddRequest(Section *section);

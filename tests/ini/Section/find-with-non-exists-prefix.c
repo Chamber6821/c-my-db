@@ -15,4 +15,6 @@ int main() {
         findPropertiesWithPrefix(section, "some not exists prefix");
 
     assert(properties == NULL);
+
+    freeSection(section);
 }

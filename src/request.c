@@ -1,6 +1,5 @@
 #include "my-db/request.h"
 
-#include <malloc.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -8,6 +7,10 @@
 #include "extensions/sds.h"
 #include "extensions/string.h"
 #include "extensions/vec.h"
+
+static inline void freeSelectRequest(SelectRequest* request);
+static inline void freeAddRequest(AddRequest* request);
+static inline void freeDeleteRequest(DeleteRequest* request);
 
 static Condition toCondition(const char* str) {
     if (str == NULL) return C_NONE;
@@ -48,6 +51,8 @@ static WhereRule* tryBuildWhereRule(Section* section) {
     return rule;
 }
 
+static inline void freeWhereRule(WhereRule* rule) { free(rule); }
+
 static OrderRule* tryBuildOrderRule(Section* section) {
     Property* property = findProperty(section, "orderBy");
     if (property == NULL) return NULL;
@@ -66,9 +71,46 @@ static OrderRule* tryBuildOrderRule(Section* section) {
     return rule;
 }
 
+static inline void freeOrderRule(OrderRule* rule) { free(rule); }
+
 Request* tryBuildRequest(Section* section) { return NULL; }
 
-void freeRequest(Request* request) {}
+typedef void (*destructor)(Request* request);
+static inline destructor getDestructorFor(RequestType type) {
+    switch (type) {
+        case RT_SELECT:
+            return (destructor)freeSelectRequest;
+        case RT_ADD:
+            return (destructor)freeAddRequest;
+        case RT_DELETE:
+            return (destructor)freeDeleteRequest;
+    }
+}
+
+void freeRequest(Request* request) { getDestructorFor(request->type)(request); }
+
+Record newRecord() { return vector_create(); }
+
+static inline void freeRecord(Record record) {
+    vector_deep_free(record, freeProperty, i);
+}
+
+Record makeRecord(vec_sds scheme, vec_sds rawFields) {
+    Record record = newRecord();
+    for (int i = 0; i < vector_size(scheme); i++) {
+        Property* prop = createEmptyProperty(scheme[i]);
+
+        float number;
+        if (1 == sscanf(rawFields[i], "%f", &number)) {
+            setNumber(prop, number);
+        } else {
+            copyToString(prop, rawFields[i]);
+        }
+
+        vector_add(&record, prop);
+    }
+    return record;
+}
 
 SelectRequest* tryBuildSelectRequest(Section* section) {
     Property* property = findProperty(section, "select[]");
@@ -90,23 +132,11 @@ SelectRequest* tryBuildSelectRequest(Section* section) {
     return request;
 }
 
-Record newRecord() { return vector_create(); }
-
-Record makeRecord(vec_sds scheme, vec_sds rawFields) {
-    Record record = newRecord();
-    for (int i = 0; i < vector_size(scheme); i++) {
-        Property* prop = createEmptyProperty(scheme[i]);
-
-        float number;
-        if (1 == sscanf(rawFields[i], "%f", &number)) {
-            setNumber(prop, number);
-        } else {
-            copyToString(prop, rawFields[i]);
-        }
-
-        vector_add(&record, prop);
-    }
-    return record;
+void freeSelectRequest(SelectRequest* request) {
+    if (request == NULL) return;
+    freeWhereRule(request->whereRule);
+    freeOrderRule(request->orderRule);
+    free(request);
 }
 
 AddRequest* tryBuildAddRequest(Section* section) {
@@ -130,6 +160,7 @@ AddRequest* tryBuildAddRequest(Section* section) {
 
         vec_sds rawFields = sdssplit(recordStrings[i], "|");
         vector_add(&records, makeRecord(scheme, rawFields));
+        vector_deep_free(rawFields, sdsfree, j);
     }
 
     vector_deep_free(scheme, sdsfree, i);
@@ -141,18 +172,30 @@ AddRequest* tryBuildAddRequest(Section* section) {
     return request;
 }
 
+void freeAddRequest(AddRequest* request) {
+    if (request == NULL) return;
+    vector_deep_free(request->records, freeRecord, i);
+    free(request);
+}
+
 DeleteRequest* tryBuildDeleteRequest(Section* section) {
     Property* property = findProperty(section, "delete");
     if (property == NULL) return NULL;
     sds flag = getString(property);
     if (flag == NULL || strcmp(flag, "all") != 0) return NULL;
 
-    WhereRule *rule = tryBuildWhereRule(section);
+    WhereRule* rule = tryBuildWhereRule(section);
     if (rule == NULL) return NULL;
 
-    DeleteRequest *request = malloc(sizeof(DeleteRequest));
+    DeleteRequest* request = malloc(sizeof(DeleteRequest));
     request->base.type = RT_DELETE;
     request->base.name = section->name;
     request->whereRule = rule;
     return request;
+}
+
+void freeDeleteRequest(DeleteRequest* request) {
+    if (request == NULL) return;
+    freeWhereRule(request->whereRule);
+    free(request);
 }

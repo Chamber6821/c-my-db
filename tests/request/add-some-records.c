@@ -62,4 +62,7 @@ int main() {
     assert(getString(record2[2]) != NULL);
     assert(strcmp(record2[2]->name, "look") == 0);
     assert(strcmp(getString(record2[2]), "poof") == 0);
+
+    freeConfig(config);
+    freeRequest(&request->base);
 }

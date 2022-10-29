@@ -33,4 +33,7 @@ int main() {
     assert(strcmp(request->whereRule->operand, "5") == 0);
     assert(request->orderRule == NULL);
     assert(request->limit == 0);
+
+    freeConfig(config);
+    freeRequest(&request->base);
 }

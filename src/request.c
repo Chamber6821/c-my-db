@@ -141,4 +141,18 @@ AddRequest* tryBuildAddRequest(Section* section) {
     return request;
 }
 
-DeleteRequest* tryBuildDeleteRequest(Section* section) { return NULL; }
+DeleteRequest* tryBuildDeleteRequest(Section* section) {
+    Property* property = findProperty(section, "delete");
+    if (property == NULL) return NULL;
+    sds flag = getString(property);
+    if (flag == NULL || strcmp(flag, "all") != 0) return NULL;
+
+    WhereRule *rule = tryBuildWhereRule(section);
+    if (rule == NULL) return NULL;
+
+    DeleteRequest *request = malloc(sizeof(DeleteRequest));
+    request->base.type = RT_DELETE;
+    request->base.name = section->name;
+    request->whereRule = rule;
+    return request;
+}

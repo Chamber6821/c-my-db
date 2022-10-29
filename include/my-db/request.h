@@ -63,4 +63,4 @@ typedef struct {
 
 SelectRequest *tryBuildSelectRequest(Section *section);
 AddRequest *tryBuildAddRequest(Section *section);
-// DeleteRequest *tryBuildDeleteRequest(Section *section);
+DeleteRequest *tryBuildDeleteRequest(Section *section);

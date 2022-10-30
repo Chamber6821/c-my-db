@@ -80,7 +80,7 @@ sds getString(Property* this) {
     return this->string;
 }
 
-void copyToString(Property* this, const char *what) {
+void copyToString(Property* this, const char* what) {
     clean(this);
 
     if (what == NULL) return;

@@ -16,8 +16,7 @@ int main() {
     vector_add(&section->properties, propB);
     vector_add(&section->properties, createEmptyProperty("he-he"));
 
-    vec_Property properties =
-        findPropertiesWithPrefix(section, "field_");
+    vec_Property properties = findPropertiesWithPrefix(section, "field_");
 
     assert(properties != NULL);
     assert(vector_size(properties) == 2);
@@ -25,5 +24,5 @@ int main() {
     assert(properties[1] == propB);
 
     freeSection(section);
-    vector_free(properties); // Property* was free in freeSection
+    vector_free(properties);  // Property* was free in freeSection
 }

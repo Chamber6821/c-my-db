@@ -5,7 +5,7 @@
 typedef Section **vec_Section;
 
 typedef struct {
-     vec_Section sections;
+    vec_Section sections;
 } Config;
 
 Config *createEmptyConfig();

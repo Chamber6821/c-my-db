@@ -3,7 +3,6 @@
 #include <assert.h>
 #include <c-vector/vec.h>
 #include <malloc.h>
-#include <string.h>
 
 Property* createEmptyProperty(const char* name) {
     Property* new = malloc(sizeof(Property));

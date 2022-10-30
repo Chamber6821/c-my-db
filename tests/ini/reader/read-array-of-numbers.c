@@ -1,5 +1,4 @@
 #include <assert.h>
-#include <string.h>
 
 #include "c-vector/vec.h"
 #include "my-db/ini/Config.h"

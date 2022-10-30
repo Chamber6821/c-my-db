@@ -1,7 +1,6 @@
 #include <assert.h>
 #include <c-vector/vec.h>
 
-#include "extensions/vec.h"
 #include "my-db/ini/Section.h"
 
 int main() {

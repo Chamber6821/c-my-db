@@ -73,7 +73,20 @@ static OrderRule *tryBuildOrderRule(Section *section) {
 
 static inline void freeOrderRule(OrderRule *rule) { free(rule); }
 
-Request* tryBuildRequest(Section* section) { return NULL; }
+typedef Request *(*builder)(Section *section);
+Request *tryBuildRequest(Section *section) {
+    builder builders[] = {
+        (builder)tryBuildSelectRequest,
+        (builder)tryBuildAddRequest,
+        (builder)tryBuildDeleteRequest,
+    };
+
+    for (int i = 0; i < _countof(builders); i++) {
+        Request *request = builders[i](section);
+        if (request != NULL) return request;
+    }
+    return NULL;
+}
 
 typedef void (*destructor)(Request *request);
 static inline destructor getDestructorFor(RequestType type) {

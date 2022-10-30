@@ -58,7 +58,7 @@ typedef struct {
     WhereRule *whereRule;
 } DeleteRequest;
 
-// Request *tryBuildRequest(Section *section);
+Request *tryBuildRequest(Section *section);
 void freeRequest(Request *request);
 
 SelectRequest *tryBuildSelectRequest(Section *section);

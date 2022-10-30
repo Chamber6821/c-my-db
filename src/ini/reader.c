@@ -6,7 +6,7 @@
 #include "inih/ini.h"
 #include "sds/sds.h"
 
-const char* ARRAY_SUFFIX = "[]";
+const char *ARRAY_SUFFIX = "[]";
 
 static bool embracedSingleQuotes(sds trimmed) {
     int lastIndex = sdslen(trimmed) - 1;
@@ -26,7 +26,7 @@ static sds unquotes(sds trimmed) {
     return trimmed;
 }
 
-static bool isArrayElement(const char* key) {
+static bool isArrayElement(const char *key) {
     sds copy = sdsnew(key);
     sdsrange(copy, -2, -1);
     bool result = strcmp(copy, ARRAY_SUFFIX) == 0;
@@ -34,13 +34,13 @@ static bool isArrayElement(const char* key) {
     return result;
 }
 
-static bool tryParseNumber(const char* value, float* out) {
-    char* end;
+static bool tryParseNumber(const char *value, float *out) {
+    char *end;
     *out = strtof(value, &end);
     return (end - value) == strlen(value);
 }
 
-static bool tryAddNumber(Property* prop, float number) {
+static bool tryAddNumber(Property *prop, float number) {
     if (!hasValue(prop)) {
         vec_float empty = vector_create();
         copyToNumbers(prop, empty);
@@ -53,7 +53,7 @@ static bool tryAddNumber(Property* prop, float number) {
     return true;
 }
 
-static bool tryAddString(Property* prop, const char* str) {
+static bool tryAddString(Property *prop, const char *str) {
     if (!hasValue(prop)) {
         vec_sds empty = vector_create();
         copyToStrings(prop, empty);
@@ -66,17 +66,17 @@ static bool tryAddString(Property* prop, const char* str) {
     return true;
 }
 
-static int handler(void* user, const char* sectionName, const char* key,
-                   const char* value) {
-    Config* config = (Config*)user;
+static int handler(void *user, const char *sectionName, const char *key,
+                   const char *value) {
+    Config *config = (Config *)user;
 
-    Section* section = findSection(config, sectionName);
+    Section *section = findSection(config, sectionName);
     if (section == NULL) {
         section = createEmptySection(sectionName);
         vector_add(&config->sections, section);
     }
 
-    Property* property = findProperty(section, key);
+    Property *property = findProperty(section, key);
     if (property == NULL) {
         property = createEmptyProperty(key);
         vector_add(&section->properties, property);
@@ -109,8 +109,8 @@ static int handler(void* user, const char* sectionName, const char* key,
     return 1;
 }
 
-Config* readConfigFile(FILE* source) {
-    Config* config = createEmptyConfig();
+Config *readConfigFile(FILE *source) {
+    Config *config = createEmptyConfig();
     int code = ini_parse_file(source, handler, config);
 
     if (code != 0) {

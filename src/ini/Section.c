@@ -7,8 +7,8 @@
 
 #include "extensions/sds.h"
 
-Section* createEmptySection(const char* name) {
-    Section* new = malloc(sizeof(Section));
+Section *createEmptySection(const char *name) {
+    Section *new = malloc(sizeof(Section));
     assert(new != NULL);
 
     new->name = sdsnew(name);
@@ -20,7 +20,7 @@ Section* createEmptySection(const char* name) {
     return new;
 }
 
-void freeSection(Section* this) {
+void freeSection(Section *this) {
     for (int i = 0; i < vector_size(this->properties); i++) {
         freeProperty(this->properties[i]);
     }
@@ -29,7 +29,7 @@ void freeSection(Section* this) {
     free(this);
 }
 
-Property* findProperty(Section* this, const char* propertyName) {
+Property *findProperty(Section *this, const char *propertyName) {
     for (int i = 0; i < vector_size(this->properties); i++) {
         if (strcmp(this->properties[i]->name, propertyName) == 0) {
             return this->properties[i];
@@ -37,7 +37,7 @@ Property* findProperty(Section* this, const char* propertyName) {
     }
     return NULL;
 }
-vec_Property findPropertiesWithPrefix(Section* this, const char* prefix) {
+vec_Property findPropertiesWithPrefix(Section *this, const char *prefix) {
     vec_Property acc = vector_create();
     for (int i = 0; i < vector_size(this->properties); i++) {
         if (sdsstartwith(this->properties[i]->name, prefix)) {

@@ -5,8 +5,8 @@
 #include <malloc.h>
 #include <string.h>
 
-Config* createEmptyConfig() {
-    Config* new = malloc(sizeof(Config));
+Config *createEmptyConfig() {
+    Config *new = malloc(sizeof(Config));
     assert(new != NULL);
 
     new->sections = vector_create();
@@ -15,7 +15,7 @@ Config* createEmptyConfig() {
     return new;
 }
 
-void freeConfig(Config* this) {
+void freeConfig(Config *this) {
     for (int i = 0; i < vector_size(this->sections); i++) {
         freeSection(this->sections[i]);
     }
@@ -23,7 +23,7 @@ void freeConfig(Config* this) {
     free(this);
 }
 
-Section* findSection(Config* this, const char* sectionName) {
+Section *findSection(Config *this, const char *sectionName) {
     for (int i = 0; i < vector_size(this->sections); i++) {
         if (strcmp(this->sections[i]->name, sectionName) == 0) {
             return this->sections[i];

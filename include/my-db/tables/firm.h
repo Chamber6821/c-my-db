@@ -11,4 +11,6 @@ struct firm {
 };
 
 firm_t *createDefaultFirm();
+firm_t *createFirm(const char *name, const char *workers, float price,
+                   float monthTax);
 void freeFirm(firm_t *this);

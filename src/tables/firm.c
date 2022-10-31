@@ -1,14 +1,16 @@
-#include <malloc.h>
-
 #include "my-db/tables/firm.h"
 
-firm_t *createDefaultFirm() {
+#include <malloc.h>
+
+firm_t *createDefaultFirm() { return createFirm(NULL, NULL, 0, 0); }
+
+firm_t *createFirm(const char *name, const char *workers, float price,
+                   float monthTax) {
     firm_t *new = malloc(sizeof(firm_t));
-    new->name = sdsempty();
-    new->workers = sdsempty();
-    new->price = 0;
-    new->monthTax = 0;
-    return new;
+    new->name = name ? sdsnew(name) : sdsempty();
+    new->workers = workers ? sdsnew(workers) : sdsempty();
+    new->price = price;
+    new->monthTax = monthTax;
 }
 
 void freeFirm(firm_t *this) {

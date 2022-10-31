@@ -21,6 +21,7 @@ Section *createEmptySection(const char *name) {
 }
 
 void freeSection(Section *this) {
+    if (this == NULL) return;
     for (int i = 0; i < vector_size(this->properties); i++) {
         freeProperty(this->properties[i]);
     }

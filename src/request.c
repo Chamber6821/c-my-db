@@ -104,7 +104,10 @@ static inline destructor getDestructorFor(RequestType type) {
     }
 }
 
-void freeRequest(Request *request) { getDestructorFor(request->type)(request); }
+void freeRequest(Request *request) {
+    if (request == NULL) return;
+    getDestructorFor(request->type)(request);
+}
 
 Record newRecord() { return vector_create(); }
 

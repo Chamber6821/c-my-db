@@ -16,6 +16,7 @@ Property *createEmptyProperty(const char *name) {
 }
 
 void freeProperty(Property *this) {
+    if (this == NULL) return;
     clean(this);
     sdsfree(this->name);
     free(this);

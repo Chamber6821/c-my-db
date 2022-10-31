@@ -16,6 +16,7 @@ Config *createEmptyConfig() {
 }
 
 void freeConfig(Config *this) {
+    if (this == NULL) return;
     for (int i = 0; i < vector_size(this->sections); i++) {
         freeSection(this->sections[i]);
     }

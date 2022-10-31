@@ -8,6 +8,10 @@
 #include "extensions/string.h"
 #include "extensions/vec.h"
 
+#ifndef _countof
+#define _countof(arr) (sizeof(arr) / sizeof(*arr))
+#endif
+
 static inline void freeSelectRequest(SelectRequest *request);
 static inline void freeAddRequest(AddRequest *request);
 static inline void freeDeleteRequest(DeleteRequest *request);

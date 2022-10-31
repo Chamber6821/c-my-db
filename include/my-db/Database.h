@@ -4,7 +4,7 @@
 
 #include "my-db/tables/firm.h"
 
-typedef const firm_t **firmsTable;
+typedef firm_t **firmsTable;
 typedef struct {
     firmsTable firms;
 } Database;
@@ -12,6 +12,6 @@ typedef struct {
 Database *createEmptyDatabase();
 void freeDatabase(Database *this);
 
-void addRecord(Database *this, const firm_t *record);
-bool tryPutRecordWithId(Database *this, int id, const firm_t *record);
+void addRecord(Database *this, firm_t *record);
+bool tryPutRecordWithId(Database *this, int id, firm_t *record);
 void deleteRecord(Database *this, int id);

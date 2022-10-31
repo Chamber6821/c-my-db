@@ -20,5 +20,6 @@ int main() {
     assert(db->firms[1] == firm2);
     assert(status == false);
 
+    freeFirm(firm3);
     freeDatabase(db);
 }

@@ -11,4 +11,9 @@ firm_t *createDefaultFirm() {
     return new;
 }
 
-void freeFirm(firm_t *this) {}
+void freeFirm(firm_t *this) {
+    if (this == NULL) return;
+    sdsfree(this->name);
+    sdsfree(this->workers);
+    free(this);
+}

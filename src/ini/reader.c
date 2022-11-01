@@ -121,3 +121,16 @@ Config *readConfigFile(FILE *source) {
 
     return config;
 }
+
+Config *readConfigString(const char *source) {
+    Config *config = createEmptyConfig();
+    int code = ini_parse_string(source, handler, config);
+
+    if (code != 0) {
+        freeConfig(config);
+        fprintf(stderr, "Parsing INI file error: %d", code);
+        return NULL;
+    }
+
+    return config;
+}

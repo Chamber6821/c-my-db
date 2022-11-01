@@ -5,3 +5,5 @@
 #include "Config.h"
 
 Config *readConfigFile(FILE *source);
+
+Config *readConfigString(const char *source);

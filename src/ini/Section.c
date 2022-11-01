@@ -30,6 +30,12 @@ void freeSection(Section *this) {
     free(this);
 }
 
+Property *addEmptyProperty(Section *this, const char *propName) {
+    Property *prop = createEmptyProperty(propName);
+    vector_add(&this->properties, prop);
+    return prop;
+}
+
 Property *findProperty(Section *this, const char *propertyName) {
     for (int i = 0; i < vector_size(this->properties); i++) {
         if (strcmp(this->properties[i]->name, propertyName) == 0) {
@@ -38,6 +44,7 @@ Property *findProperty(Section *this, const char *propertyName) {
     }
     return NULL;
 }
+
 vec_Property findPropertiesWithPrefix(Section *this, const char *prefix) {
     vec_Property acc = vector_create();
     for (int i = 0; i < vector_size(this->properties); i++) {

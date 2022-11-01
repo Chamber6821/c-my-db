@@ -9,3 +9,7 @@
         }                                                              \
         vector_free(vec);                                              \
     })
+
+typedef void **vec_pointer;
+
+void vector_remove_nulls(vec_pointer vec);

@@ -15,10 +15,8 @@ int main() {
 
     assert(db->firms != NULL);
     assert(vector_size(db->firms) == 2);
-    assert(db->firms[0]->id == 0);
-    assert(db->firms[0]->firm == firm3);
-    assert(db->firms[1]->id == 1);
-    assert(db->firms[1]->firm == firm2);
+    assert(db->firms[0] == firm3);
+    assert(db->firms[1] == firm2);
     assert(status == true);
 
     freeDatabase(db);

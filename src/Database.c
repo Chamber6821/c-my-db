@@ -5,20 +5,6 @@
 #include "c-vector/vec.h"
 #include "extensions/vec.h"
 
-static inline FirmRow *createRow(int id, firm_t *firm) {
-    if (firm == NULL) return NULL;
-    FirmRow *new = malloc(sizeof(FirmRow));
-    new->id = id;
-    new->firm = firm;
-    return new;
-}
-
-static inline void freeRow(FirmRow *row) {
-    if (row == NULL) return;
-    freeFirm(row->firm);
-    free(row);
-}
-
 Database *createEmptyDatabase() {
     Database *new = malloc(sizeof(Database));
     new->firms = vector_create();
@@ -27,12 +13,12 @@ Database *createEmptyDatabase() {
 
 void freeDatabase(Database *this) {
     if (this == NULL) return;
-    vector_deep_free(this->firms, freeRow, i);
+    vector_deep_free(this->firms, freeFirm, i);
     free(this);
 }
 
 void addRecord(Database *this, firm_t *record) {
-    vector_add(&this->firms, createRow(vector_size(this->firms), record));
+    vector_add(&this->firms, record);
 }
 
 bool tryPutRecordWithId(Database *this, int id, firm_t *record) {
@@ -42,13 +28,13 @@ bool tryPutRecordWithId(Database *this, int id, firm_t *record) {
 
     if (this->firms[id] != NULL) return false;
 
-    this->firms[id] = createRow(id, record);
+    this->firms[id] = record;
     return true;
 }
 
 void deleteRecord(Database *this, int id) {
     if (0 > id || id >= vector_size(this->firms)) return;
 
-    if (this->firms[id] != NULL) freeRow(this->firms[id]);
+    if (this->firms[id] != NULL) freeFirm(this->firms[id]);
     this->firms[id] = NULL;
 }

@@ -21,6 +21,7 @@ static Condition toCondition(const char *str) {
     if (strcmp(str, "<=") == 0) return C_LT | C_EQ;
     if (strcmp(str, ">=") == 0) return C_GT | C_EQ;
     if (strcmp(str, "=") == 0) return C_EQ;
+    if (strcmp(str, "!=") == 0) return C_NEQ;
     if (strcmp(str, "<") == 0) return C_LT;
     if (strcmp(str, ">") == 0) return C_GT;
     return C_NONE;

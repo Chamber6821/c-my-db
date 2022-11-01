@@ -16,6 +16,7 @@ typedef enum {
     C_GT = 0b100,
     C_LT = 0b110,
     C_EQ = 0b001,
+    C_NEQ = 0b010,
 } Condition;
 
 typedef enum {

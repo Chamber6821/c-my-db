@@ -4,9 +4,15 @@
 
 #include "my-db/tables/firm.h"
 
-typedef firm_t **firmsTable;
 typedef struct {
-    firmsTable firms;
+    int id;
+    firm_t *firm;
+} FirmRow;
+
+typedef FirmRow **vec_FirmRow;
+
+typedef struct {
+    vec_FirmRow firms;
 } Database;
 
 Database *createEmptyDatabase();

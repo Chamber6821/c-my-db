@@ -7,6 +7,7 @@ int main() {
     firm_t *firm = createFirm("MyFirm", "I", 10, 100);
 
     assert(firm != NULL);
+    assert(firm->id == -1);
     assert(firm->name != NULL);
     assert(strcmp(firm->name, "MyFirm") == 0);
     assert(firm->workers != NULL);

@@ -4,6 +4,7 @@
 
 typedef struct firm firm_t;
 struct firm {
+    int id;
     sds name;
     sds workers;
     float price;

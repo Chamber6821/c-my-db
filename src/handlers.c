@@ -43,15 +43,19 @@ static firm_t *recordToFirm(Record record) {
 }
 
 Section *handleAddRequest(Database *db, AddRequest *request) {
+    int added = 0;
     for (int i = 0; i < vector_size(request->records); i++) {
-        vector_add(&db->firms, recordToFirm(request->records[i]));
+        firm_t *record = recordToFirm(request->records[i]);
+        if (record->id == -1) {
+            addRecord(db, record);
+            added++;
+        } else {
+            added += tryPutRecordWithId(db, record->id, record);
+        }
     }
 
-    Property *added = createEmptyProperty("added");
-    setNumber(added, vector_size(request->records));
-
     Section *result = createEmptySection(request->base.name);
-    vector_add(&result->properties, added);
+    setNumber(addEmptyProperty(result, "added"), added);
 
     return result;
 }

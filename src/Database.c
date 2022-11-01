@@ -18,6 +18,7 @@ void freeDatabase(Database *this) {
 }
 
 void addRecord(Database *this, firm_t *record) {
+    if (record != NULL) record->id = vector_size(this->firms);
     vector_add(&this->firms, record);
 }
 

@@ -24,6 +24,12 @@ void freeConfig(Config *this) {
     free(this);
 }
 
+Section *addSection(Config *this, const char *sectionName) {
+    Section *section = createEmptySection(sectionName);
+    vector_add(&this->sections, section);
+    return section;
+}
+
 Section *findSection(Config *this, const char *sectionName) {
     for (int i = 0; i < vector_size(this->sections); i++) {
         if (strcmp(this->sections[i]->name, sectionName) == 0) {

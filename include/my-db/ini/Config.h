@@ -11,4 +11,6 @@ typedef struct {
 Config *createEmptyConfig();
 void freeConfig(Config *this);
 
+Section *addSection(Config *this, const char *sectionName);
+
 Section *findSection(Config *this, const char *sectionName);

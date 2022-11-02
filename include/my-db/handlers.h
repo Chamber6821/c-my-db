@@ -6,6 +6,6 @@
 
 //Section *handleRequest(Database *db, Request *request);
 
-//Section *handleSelectRequest(Database *db, SelectRequest *request);
+Section *handleSelectRequest(Database *db, SelectRequest *request);
 Section *handleAddRequest(Database *db, AddRequest *request);
 //Section *handleDeleteRequest(Database *db, DeleteRequest *request);

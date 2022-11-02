@@ -1,5 +1,6 @@
 #include "my-db/handlers.h"
 
+#include <assert.h>
 #include <limits.h>
 #include <stdio.h>
 #include <string.h>
@@ -163,6 +164,18 @@ bool isSuit(firm_t *firm, WhereRule *rule) {
     }
 
     return false;
+}
+
+Section *handleRequest(Database *db, Request *request) {
+    switch (request->type) {
+        case RT_SELECT:
+            return handleSelectRequest(db, (SelectRequest *)request);
+        case RT_ADD:
+            return handleAddRequest(db, (AddRequest *)request);
+        case RT_DELETE:
+            return handleDeleteRequest(db, (DeleteRequest *)request);
+    }
+    assert(!"Not implemented handler for the request");
 }
 
 Section *handleSelectRequest(Database *db, SelectRequest *request) {

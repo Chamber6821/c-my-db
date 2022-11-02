@@ -1,5 +1,6 @@
 #include "my-db/handlers.h"
 
+#include <limits.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -151,7 +152,8 @@ bool isSuit(firm_t *firm, WhereRule *rule) {
     } else if (strcmp(rule->field, "name") == 0) {
         return compare(strcmp(firm->name, rule->operand), rule->condition, 0);
     } else if (strcmp(rule->field, "workers") == 0) {
-        return compare(strcmp(firm->workers, rule->operand), rule->condition, 0);
+        return compare(strcmp(firm->workers, rule->operand), rule->condition,
+                       0);
     } else if (strcmp(rule->field, "price") == 0) {
         if (scanned != 1) return false;
         return compare(firm->price, rule->condition, operand);
@@ -186,6 +188,7 @@ Section *handleSelectRequest(Database *db, SelectRequest *request) {
     Section *result = createEmptySection(request->base.name);
     copyToStrings(addEmptyProperty(result, "records[]"), convertedRecords);
     vector_free(convertedRecords);
+    vector_free(firms);  // not deep free because I am not the owner of records
 
     return result;
 }

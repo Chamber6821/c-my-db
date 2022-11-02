@@ -40,6 +40,7 @@ int main() {
     assert(strcmp(records[1], "LoveKva|8") == 0);
     assert(strcmp(records[2], "BonGo|1e+06") == 0);
 
+    freeSection(result);
     freeConfig(config);
     freeRequest(&request->base);
     freeDatabase(db);

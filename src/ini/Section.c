@@ -30,7 +30,7 @@ void freeSection(Section *this) {
     free(this);
 }
 
-Property *addEmptyProperty(Section *this, const char *propName) {
+Property *addProperty(Section *this, const char *propName) {
     Property *prop = createEmptyProperty(propName);
     vector_add(&this->properties, prop);
     return prop;

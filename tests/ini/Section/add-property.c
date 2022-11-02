@@ -8,7 +8,7 @@ int main() {
     Section *section = createEmptySection("MySection");
     assert(section != NULL);
 
-    Property *prop = addEmptyProperty(section, "NewProp");
+    Property *prop = addProperty(section, "NewProp");
     assert(prop != NULL);
     assert(prop->type == PT_NONE);
 

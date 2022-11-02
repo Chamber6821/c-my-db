@@ -199,7 +199,7 @@ Section *handleSelectRequest(Database *db, SelectRequest *request) {
     }
 
     Section *result = createEmptySection(request->base.name);
-    copyToStrings(addEmptyProperty(result, "records[]"), convertedRecords);
+    copyToStrings(addProperty(result, "records[]"), convertedRecords);
     vector_free(convertedRecords);
     vector_free(firms);  // not deep free because I am not the owner of records
 
@@ -219,7 +219,7 @@ Section *handleAddRequest(Database *db, AddRequest *request) {
     }
 
     Section *result = createEmptySection(request->base.name);
-    setNumber(addEmptyProperty(result, "added"), added);
+    setNumber(addProperty(result, "added"), added);
 
     return result;
 }
@@ -235,7 +235,7 @@ Section *handleDeleteRequest(Database *db, DeleteRequest *request) {
     }
 
     Section *result = createEmptySection(request->base.name);
-    setNumber(addEmptyProperty(result, "deleted"), deleted);
+    setNumber(addProperty(result, "deleted"), deleted);
 
     return result;
 }

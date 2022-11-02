@@ -210,3 +210,19 @@ Section *handleAddRequest(Database *db, AddRequest *request) {
 
     return result;
 }
+
+Section *handleDeleteRequest(Database *db, DeleteRequest *request) {
+    int deleted = 0;
+    for (int i = vector_size(db->firms) - 1; i >= 0; i--) {
+        if (db->firms[i] == NULL) continue;
+        if (isSuit(db->firms[i], request->whereRule)) {
+            deleteRecord(db, i);
+            deleted++;
+        }
+    }
+
+    Section *result = createEmptySection(request->base.name);
+    setNumber(addEmptyProperty(result, "deleted"), deleted);
+
+    return result;
+}
